@@ -8,7 +8,7 @@ namespace FastFood.Domain.Entities.CustomerIdentification
 {
     public enum EnumCustomerType
     {
-        Identified = 0,
-        Anonymous = 1
+        Anonymous = 0,
+        Identified = 1
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FastFood.Domain.Entities.Payment
+namespace FastFood.Domain.Entities.PaymentManagement
 {
     public enum EnumPaymentStatus
     {

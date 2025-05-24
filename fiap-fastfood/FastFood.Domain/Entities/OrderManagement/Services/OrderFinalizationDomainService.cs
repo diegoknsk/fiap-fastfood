@@ -1,14 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using FastFood.Domain.Entities.PaymentManagement;
+using FastFood.Domain.Entities.PreparationManagement;
+
 
 namespace FastFood.Domain.Entities.OrderManagement.Services
 {
-    //TODO: explicar aqui que tive uma questào sobre domain services
-    //aplicar aqui a logica para finalizacao do pedido
     public class OrderFinalizationDomainService
     {
+        public bool CanFinalizeOrder(Order order, Preparation preparation, Payment payment)
+        {
+            return preparation.Status == EnumPreparationStatus.Finished
+                   && payment.Status == EnumPaymentStatus.Approved
+                   && order.OrderStatus != EnumOrderStatus.Finished;
+        }
     }
 }

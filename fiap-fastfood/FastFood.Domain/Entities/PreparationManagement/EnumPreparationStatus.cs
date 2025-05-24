@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FastFood.Domain.Entities.Preparation
+namespace FastFood.Domain.Entities.PreparationManagement
 {
     public enum EnumPreparationStatus
     {
