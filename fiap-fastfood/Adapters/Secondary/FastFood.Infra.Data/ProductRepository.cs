@@ -12,7 +12,7 @@ namespace FastFood.Infra.Data
             {
                 new Product(null, "X-Burger", EnumProductCategory.Meal, 18.50m,
                     new List<CustomIngredient> {
-                        new CustomIngredient(null, "Pão", 0),
+                        new CustomIngredient(null, "Pão", 200),
                         new CustomIngredient(null, "Carne", 0),
                         new CustomIngredient(null, "Queijo", 0)
                     }, new ImageProduct("xburger.jpg", "https://cdn.exemplo.com/xburger.jpg")),
