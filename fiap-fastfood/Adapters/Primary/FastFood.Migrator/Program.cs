@@ -11,9 +11,19 @@ var host = Host.CreateDefaultBuilder(args)
     })
     .ConfigureServices((context, services) =>
     {
-        var connectionString = context.Configuration.GetConnectionString("DefaultConnection");
+        var connectionString =
+            Environment.GetEnvironmentVariable("DEFAULT_CONNECTION") ??
+            context.Configuration.GetConnectionString("DefaultConnection");
 
         services.AddDbContext<FastFoodDbContext>(options =>
-            options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+            options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 0))));
+
+        //options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
     })
     .Build();
+
+using (var scope = host.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<FastFoodDbContext>();
+    db.Database.Migrate();
+}

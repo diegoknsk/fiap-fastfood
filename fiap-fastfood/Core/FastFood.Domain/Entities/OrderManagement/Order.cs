@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FastFood.Domain.Common.Exceptions;
+﻿using FastFood.Domain.Common.Exceptions;
 using FastFood.Domain.Entities.PaymentManagement;
 
 namespace FastFood.Domain.Entities.OrderManagement
@@ -31,6 +26,7 @@ namespace FastFood.Domain.Entities.OrderManagement
 
         public Order(
             Guid? id,
+            string? code,
             ICollection<OrderedProduct>? orderedMealProducts,
             ICollection<OrderedProduct>? orderedSideDishes,
             ICollection<OrderedProduct>? orderedDrinks,
@@ -41,6 +37,7 @@ namespace FastFood.Domain.Entities.OrderManagement
         {
             Id = id ?? Guid.NewGuid();
             CreatedAt = DateTime.UtcNow;
+            Code = code;
 
             SetProperties(orderedMealProducts, orderedSideDishes, orderedDrinks, orderedDesserts, paymentStatus, orderStatus, customerId);
         }
@@ -56,6 +53,7 @@ namespace FastFood.Domain.Entities.OrderManagement
         {
             Id = Guid.NewGuid();
             CreatedAt = DateTime.UtcNow;
+            Code = string.Empty;
 
             SetProperties(orderedMealProducts, orderedSideDishes, orderedDrinks, orderedDesserts, paymentStatus, orderStatus, customerId);
         }
@@ -79,6 +77,11 @@ namespace FastFood.Domain.Entities.OrderManagement
             CustomerId = customerId;
 
             CalculateTotalPrice();
+        }
+
+        public void SetCode(string code)
+        {
+            Code = code;
         }
 
         public void CalculateTotalPrice()

@@ -15,6 +15,10 @@ namespace FastFood.Domain.Entities.OrderManagement
         public string? Name { get; private set; }
         public decimal Price { get; private set; }
 
+        protected CustomIngredient()
+        {
+        }
+
         public CustomIngredient(Guid? id, string name, decimal price)
         {
             Id = id ?? Guid.NewGuid();
@@ -30,12 +34,6 @@ namespace FastFood.Domain.Entities.OrderManagement
         private void SetProperties(string name, decimal price)
         {
             DomainValidation.ThrowIfNullOrWhiteSpace(name, "Name is required.");
-            /*
-            if (price <= 0)
-            {
-                throw new DomainException("Price must be greater than zero.");
-            }*/
-
             Name = name;
             Price = price;
         }

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace FastFood.Infra.Data.Mappings
+namespace FastFood.Infra.Data.Mappings.CustomerIdentification
 {
     public class CustomerMap : IEntityTypeConfiguration<Customer>
     {

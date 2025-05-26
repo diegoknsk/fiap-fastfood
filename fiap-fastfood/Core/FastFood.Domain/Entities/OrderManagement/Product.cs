@@ -12,6 +12,10 @@ namespace FastFood.Domain.Entities.OrderManagement
         public decimal Price { get; private set; }
         public ImageProduct? Image { get;private set;}
 
+        protected Product()
+        {
+        }
+
         public Product(Guid? id, string name, EnumProductCategory category, decimal price, ICollection<CustomIngredient>? ingredients = null, ImageProduct? image = null)
         {
             Id = id ?? Guid.NewGuid();
