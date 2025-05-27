@@ -30,12 +30,12 @@ namespace FastFood.Infra.Data.Mappings.OrderManagement
 
             builder.HasMany(x => x.AddedIngredients)
                 .WithOne()
-                .HasForeignKey("OrderedProductId_Added")
+                .HasForeignKey(i => i.OrderedProductId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(x => x.RemovedIngredients)
                 .WithOne()
-                .HasForeignKey("OrderedProductId_Removed")
+                .HasForeignKey(i => i.OrderedProductId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

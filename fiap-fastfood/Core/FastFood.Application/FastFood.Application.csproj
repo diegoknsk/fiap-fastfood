@@ -10,4 +10,8 @@
     <ProjectReference Include="..\FastFood.Domain\FastFood.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Mappers\Filters\OrderManagement\" />
+  </ItemGroup>
+
 </Project>

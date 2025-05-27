@@ -1,7 +1,10 @@
+using FastFood.Api.Filters;
 using FastFood.Application.Services.OrderManagement;
+using FastFood.Domain.Ports.Common;
 using FastFood.Domain.Ports.OrderManagement;
-using FastFood.Infra.Data;
 using FastFood.Infra.Data.Context;
+using FastFood.Infra.Data.Repositories.Common;
+using FastFood.Infra.Data.Repositories.OrderManagement;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,9 +22,13 @@ var connectionString =
 builder.Services.AddDbContext<FastFoodDbContext>(options =>
     options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 0)))
 );
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
-
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<ApiExceptionFilter>();
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

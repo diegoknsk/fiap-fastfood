@@ -4,6 +4,7 @@ using FastFood.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FastFood.Infra.Data.Migrations
 {
     [DbContext(typeof(FastFoodDbContext))]
-    partial class FastFoodDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250526201428_SeedV2_ClearAndInsertProducts")]
+    partial class SeedV2_ClearAndInsertProducts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

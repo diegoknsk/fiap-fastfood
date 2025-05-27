@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FastFood.Application.Models.OrderManagement
+namespace FastFood.Application.Models.OrderManagement.Ingredients
 {
-    public class CustomIngredientModel
+    public class AddedIngredientModel
     {
         public Guid Id { get; set; }
         public string? Name { get; set; }

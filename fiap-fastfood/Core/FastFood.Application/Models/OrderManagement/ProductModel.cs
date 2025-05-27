@@ -1,4 +1,5 @@
-﻿using FastFood.Domain.Entities.OrderManagement;
+﻿using FastFood.Application.Models.OrderManagement.Ingredients;
+using FastFood.Domain.Entities.OrderManagement;
 
 namespace FastFood.Application.Models.OrderManagement
 {
@@ -8,7 +9,7 @@ namespace FastFood.Application.Models.OrderManagement
         public string Name { get; set; } = string.Empty;
         public EnumProductCategory Category { get; set; }
         public decimal Price { get; set; }
-        public List<CustomIngredientModel> Ingredients { get; set; } = new();
+        public List<ProductBaseIngredientModel> Ingredients { get; set; } = new();
         public ImageProductModel? Image { get; set; }
     }
 }
