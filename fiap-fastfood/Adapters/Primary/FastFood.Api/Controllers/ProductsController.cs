@@ -16,13 +16,6 @@ namespace FastFood.Api.Controllers
             _service = service;
         }
 
-        /*[HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            var result = await _service.GetAllAsync();
-            return Ok(result);
-        }*/
-
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] ProductFilterParameters filter)
         {
@@ -42,22 +35,34 @@ namespace FastFood.Api.Controllers
         public async Task<IActionResult> Create([FromBody] ProductModel model)
         {
             var created = await _service.CreateAsync(model);
-            return created ? Ok() : BadRequest();
+
+            if (!created)
+                return BadRequest(ApiResponse<string>.Fail("Erro ao criar o produto."));
+
+            return Ok(ApiResponse<string>.Ok(null, "Produto criado com sucesso."));
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] ProductModel model)
         {
-            if (model.Id != id) return BadRequest("ID mismatch.");
+            if (model.Id != id)
+                return BadRequest(ApiResponse<string>.Fail("O ID do modelo não corresponde ao da URL."));
+
             var updated = await _service.UpdateAsync(model);
-            return updated ? Ok() : NotFound();
+            if (!updated)
+                return NotFound(ApiResponse<string>.Fail("Produto não encontrado."));
+
+            return Ok(ApiResponse<string>.Ok("Produto atualizado com sucesso."));
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             var deleted = await _service.DeleteAsync(id);
-            return deleted ? Ok() : NotFound();
+            if (!deleted)
+                return NotFound(ApiResponse<string>.Fail("Produto não encontrado."));
+
+            return Ok(ApiResponse<string>.Ok("Produto removido com sucesso."));
         }
     }
 

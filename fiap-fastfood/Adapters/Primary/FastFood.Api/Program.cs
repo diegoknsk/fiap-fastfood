@@ -6,6 +6,7 @@ using FastFood.Infra.Data.Context;
 using FastFood.Infra.Data.Repositories.Common;
 using FastFood.Infra.Data.Repositories.OrderManagement;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,13 @@ builder.Services.AddControllers(options =>
 {
     options.Filters.Add<ApiExceptionFilter>();
 });
+
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+        options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+    });
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
