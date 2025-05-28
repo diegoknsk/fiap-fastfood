@@ -4,8 +4,6 @@ using FastFood.Infra.Data.Context;
 using FastFood.Infra.Data.Repositories.Common;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using FastFood.Domain.Ports.Common;
-using FastFood.Application.Models.Common;
 
 namespace FastFood.Infra.Data.Repositories.OrderManagement
 {

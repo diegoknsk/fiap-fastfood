@@ -1,5 +1,4 @@
-﻿using FastFood.Domain.Common.Exceptions;
-using FastFood.Domain.Entities.CustomerIdentification.ValueObjects;
+﻿using FastFood.Domain.Entities.CustomerIdentification.ValueObjects;
 
 namespace FastFood.Domain.Entities.CustomerIdentification
 {
