@@ -10,7 +10,7 @@ namespace FastFood.Application.Mappers.OrderManagement.Ingredients
 {
     public static class AddedIngredientMapper
     {
-        public static AddedIngredient ToEntity(this AddedIngredientModel model, Guid orderedProductId)
+        /*public static AddedIngredient ToEntity(this AddedIngredientModel model, Guid orderedProductId)
         {
             return new AddedIngredient(model.Id, model.Name, model.Price, orderedProductId);
         }
@@ -23,6 +23,6 @@ namespace FastFood.Application.Mappers.OrderManagement.Ingredients
                 Name = entity.Name ?? string.Empty,
                 Price = entity.Price
             };
-        }
+        }*/
     }
 }

@@ -1,11 +1,6 @@
 ﻿using FastFood.Domain.Entities.CustomerIdentification;
 using FastFood.Domain.Ports.CustomerIdentification;
 using FastFood.Infra.Data.Context;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace FastFood.Infra.Data.Repositories.CustomerIdentification

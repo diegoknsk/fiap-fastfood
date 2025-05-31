@@ -2,17 +2,6 @@
 
 namespace FastFood.Domain.Entities.OrderManagement.ValueObjects
 {
-    /*
-     *
-         *https://picsum.photos/200/300
-        https://picsum.photos/id/237/200/300
-
-        ✅ Ótimo para testes rápidos e dummy data
-
-        3. Pexels
-     *
-     *
-     */
     public class ImageProduct
     {
         public string? Name { get; private set; }

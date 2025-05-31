@@ -23,8 +23,8 @@ namespace FastFood.Infra.Data.Context
         public DbSet<Preparation> Preparations => Set<Preparation>();
         public DbSet<Delivery> Deliveries => Set<Delivery>();
         public DbSet<ProductBaseIngredient> ProductBaseIngredients => Set<ProductBaseIngredient>();
-        public DbSet<AddedIngredient> AddedIngredients => Set<AddedIngredient>();
-        public DbSet<RemovedIngredient> RemovedIngredients => Set<RemovedIngredient>();
+        public DbSet<OrderedProductIngredient> OrderedProductIngredients => Set<OrderedProductIngredient>();
+
 
 
         public FastFoodDbContext(DbContextOptions<FastFoodDbContext> options) : base(options) { }

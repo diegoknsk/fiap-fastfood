@@ -26,6 +26,11 @@ namespace FastFood.Infra.Data.Repositories.Common
             return await query.FirstOrDefaultAsync(e => EF.Property<Guid>(e, "Id") == id);
         }
 
+        public virtual async Task<T?> GetByIdAsync(Guid id)
+        {
+            return await _dbSet.FirstOrDefaultAsync(e => EF.Property<Guid>(e, "Id") == id);
+        }
+
         public virtual async Task<IEnumerable<T>> GetAllAsync(params Expression<Func<T, object>>[] includes)
         {
             IQueryable<T> query = _dbSet;
@@ -47,6 +52,12 @@ namespace FastFood.Infra.Data.Repositories.Common
         public virtual async Task AddAsync(T entity) => await _dbSet.AddAsync(entity);
 
         public virtual void Update(T entity) => _dbSet.Update(entity);
+
+        public virtual Task UpdateAsync(T entity)
+        {
+            _dbSet.Update(entity);
+            return Task.CompletedTask;
+        }
 
         public virtual void Remove(T entity) => _dbSet.Remove(entity);
     }

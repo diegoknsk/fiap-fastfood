@@ -7,15 +7,22 @@ namespace FastFood.Domain.Entities.OrderManagement.Ingredients
         public Guid Id { get; protected set; }
         public string? Name { get; protected set; }
         public decimal Price { get; protected set; }
+        
 
         protected CustomIngredient() { }
 
         protected CustomIngredient(Guid id, string? name, decimal price)
         {
-            SetProperties(id, name, price);
+            Id = id;
+            SetProperties(name, price);
         }
 
-        protected void SetProperties(Guid id, string? name, decimal price)
+        protected CustomIngredient(string? name, decimal price)
+        {
+            SetProperties(name, price);
+        }
+
+        protected void SetProperties(string? name, decimal price)
         {
             DomainValidation.ThrowIfNullOrWhiteSpace(name, "Name is required.");
 
@@ -24,7 +31,7 @@ namespace FastFood.Domain.Entities.OrderManagement.Ingredients
                 throw new DomainException("Price must be greater than zero.");
             }
 
-            Id = id;
+
             Name = name;
             Price = price;
         }

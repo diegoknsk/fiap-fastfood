@@ -4,6 +4,7 @@ using FastFood.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FastFood.Infra.Data.Migrations
 {
     [DbContext(typeof(FastFoodDbContext))]
-    partial class FastFoodDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250530154508_FinalFix_OrderId")]
+    partial class FinalFix_OrderId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -76,16 +79,11 @@ namespace FastFood.Infra.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<Guid?>("OrderedProductId")
-                        .IsRequired()
+                    b.Property<Guid>("OrderedProductId")
                         .HasColumnType("char(36)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(10,2)");
-
-                    b.Property<Guid?>("ProductBaseIngredientId")
-                        .HasColumnType("char(36)")
-                        .HasColumnName("ProductBaseIngredientId");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -148,8 +146,6 @@ namespace FastFood.Infra.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
-
                     b.ToTable("Orders", (string)null);
                 });
 
@@ -166,20 +162,20 @@ namespace FastFood.Infra.Data.Migrations
                         .HasMaxLength(300)
                         .HasColumnType("varchar(300)");
 
-                    b.Property<Guid?>("OrderId")
-                        .IsRequired()
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("OrderId1")
                         .HasColumnType("char(36)");
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("char(36)");
 
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int")
-                        .HasColumnName("Quantity");
-
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
+
+                    b.HasIndex("OrderId1");
 
                     b.HasIndex("ProductId");
 
@@ -309,13 +305,11 @@ namespace FastFood.Infra.Data.Migrations
 
             modelBuilder.Entity("FastFood.Domain.Entities.OrderManagement.Ingredients.OrderedProductIngredient", b =>
                 {
-                    b.HasOne("FastFood.Domain.Entities.OrderManagement.OrderedProduct", "OrderedProduct")
+                    b.HasOne("FastFood.Domain.Entities.OrderManagement.OrderedProduct", null)
                         .WithMany("CustomIngredients")
                         .HasForeignKey("OrderedProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("OrderedProduct");
                 });
 
             modelBuilder.Entity("FastFood.Domain.Entities.OrderManagement.Ingredients.ProductBaseIngredient", b =>
@@ -327,23 +321,17 @@ namespace FastFood.Infra.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("FastFood.Domain.Entities.OrderManagement.Order", b =>
-                {
-                    b.HasOne("FastFood.Domain.Entities.CustomerIdentification.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Customer");
-                });
-
             modelBuilder.Entity("FastFood.Domain.Entities.OrderManagement.OrderedProduct", b =>
                 {
-                    b.HasOne("FastFood.Domain.Entities.OrderManagement.Order", "Order")
+                    b.HasOne("FastFood.Domain.Entities.OrderManagement.Order", null)
                         .WithMany("OrderedProducts")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("FastFood.Domain.Entities.OrderManagement.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId1");
 
                     b.HasOne("FastFood.Domain.Entities.OrderManagement.Product", "Product")
                         .WithMany()

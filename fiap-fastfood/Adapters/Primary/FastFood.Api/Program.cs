@@ -25,6 +25,9 @@ var connectionString =
 
 builder.Services.AddDbContext<FastFoodDbContext>(options =>
     options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 0)))
+        .EnableSensitiveDataLogging() // Mostra os valores reais nas queries
+        .EnableDetailedErrors()       // Mensagens de erro mais claras
+        .LogTo(Console.WriteLine, LogLevel.Information) // Joga no console
 );
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -32,6 +35,10 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<ICustomerAppService, CustomerAppService>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderAppService, OrderAppService>();
+builder.Services.AddScoped<IOrderedProductRepository, OrderedProductRepository>();
+
 
 builder.Services.AddControllers(options =>
 {

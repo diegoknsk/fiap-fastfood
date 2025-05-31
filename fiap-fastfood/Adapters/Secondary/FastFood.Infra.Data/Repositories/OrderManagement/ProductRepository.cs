@@ -1,4 +1,5 @@
 ﻿using FastFood.Domain.Entities.OrderManagement;
+using FastFood.Domain.Entities.OrderManagement.Ingredients;
 using FastFood.Domain.Ports.OrderManagement;
 using FastFood.Infra.Data.Context;
 using FastFood.Infra.Data.Repositories.Common;
@@ -39,6 +40,16 @@ namespace FastFood.Infra.Data.Repositories.OrderManagement
             return await _dbSet
                 .Include(p => p.Ingredients)
                 .FirstOrDefaultAsync(p => p.Id == id);
+        }
+
+        public async Task<ProductBaseIngredient?> GetBaseIngredientByProductAsync(Guid productId, Guid ingredientId)
+        {
+            var product = await _context.Products
+                .Include(p => p.Ingredients)
+                .FirstOrDefaultAsync(p => p.Id == productId);
+
+            return product?.Ingredients
+                .FirstOrDefault(i => i.Id == ingredientId);
         }
     }
 }

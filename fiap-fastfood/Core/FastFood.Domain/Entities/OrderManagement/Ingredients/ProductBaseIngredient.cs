@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FastFood.Domain.Entities.OrderManagement.Ingredients
+﻿namespace FastFood.Domain.Entities.OrderManagement.Ingredients
 {
     public class ProductBaseIngredient : CustomIngredient
     {

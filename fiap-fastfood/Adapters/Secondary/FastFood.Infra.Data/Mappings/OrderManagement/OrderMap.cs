@@ -1,11 +1,6 @@
 ﻿using FastFood.Domain.Entities.OrderManagement;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FastFood.Infra.Data.Mappings.OrderManagement
 {
@@ -35,23 +30,23 @@ namespace FastFood.Infra.Data.Mappings.OrderManagement
                 .HasColumnType("decimal(10,2)")
                 .IsRequired();
 
-            builder.Property(x => x.CustomerId);
+            builder.Property(x => x.CustomerId)
+                .IsRequired(false);
 
-            builder.HasMany(x => x.OrderedMealProducts)
-                .WithOne()
-                .HasForeignKey("OrderId_Meal");
+            builder.HasOne(x => x.Customer)
+                .WithMany() 
+                .HasForeignKey(x => x.CustomerId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasMany(x => x.OrderedSideDish)
-                .WithOne()
-                .HasForeignKey("OrderId_SideDish");
+            builder.HasMany(x => x.OrderedProducts)
+                .WithOne(x => x.Order) // mapeia a propriedade corretamente
+                .HasForeignKey(x => x.OrderId)
+                .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasMany(x => x.OrderedDrink)
-                .WithOne()
-                .HasForeignKey("OrderId_Drink");
-
-            builder.HasMany(x => x.OrderedDessert)
-                .WithOne()
-                .HasForeignKey("OrderId_Dessert");
+            builder.Ignore(x => x.Meals);
+            builder.Ignore(x => x.SideDishes);
+            builder.Ignore(x => x.Drinks);
+            builder.Ignore(x => x.Desserts);
         }
     }
 }
