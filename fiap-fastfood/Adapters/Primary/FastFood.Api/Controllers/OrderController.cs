@@ -17,6 +17,13 @@ namespace FastFood.Api.Controllers
             _orderAppService = orderAppService;
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOrderById(Guid id)
+        {
+            var order = await _orderAppService.GetOrderByIdAsync(id);
+            return Ok(new ApiResponse<OrderModel>(order));
+        }
+
         [HttpPost("start")]
         public async Task<IActionResult> StartOrder([FromBody] OrderCustomerStartModel customer)
         {
@@ -31,14 +38,14 @@ namespace FastFood.Api.Controllers
             return Ok(new ApiResponse<string>("Produto adicionado com sucesso ao pedido."));
         }
 
-        [HttpPut("product")]
+        [HttpPut("update-product")]
         public async Task<IActionResult> UpdateProductInOrder([FromBody] UpdateProductInOrderModel model)
         {
             await _orderAppService.UpdateProductInOrderAsync(model);
             return Ok(new ApiResponse<string>("Produto do pedido atualizado com sucesso."));
         }
 
-        [HttpDelete("product")]
+        [HttpDelete("remove-product")]
         public async Task<IActionResult> RemoveProductFromOrder([FromBody] RemoveProductFromOrderModel model)
         {
             await _orderAppService.RemoveProductFromOrderAsync(model);

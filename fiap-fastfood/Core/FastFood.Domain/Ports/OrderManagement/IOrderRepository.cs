@@ -7,6 +7,9 @@ namespace FastFood.Domain.Ports.OrderManagement
     {
         Task<Order?> GetByIdAsync(Guid id);
         Task<Order?> GetByIdAsync(Guid id, params Expression<Func<Order, object>>[] includes);
+        Task<Order?> GetByIdWithProductsAndIngredientsAsync(Guid id);
+
+        Task<Order?> GetCompleteByIdAsync(Guid id);
 
         Task AddAsync(Order order);
         Task UpdateAsync(Order order);

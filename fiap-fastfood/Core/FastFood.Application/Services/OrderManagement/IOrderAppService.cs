@@ -9,5 +9,7 @@ namespace FastFood.Application.Services.OrderManagement
         Task AddProductToOrderAsync(AddProductToOrderModel model);
         Task UpdateProductInOrderAsync(UpdateProductInOrderModel model);
         Task RemoveProductFromOrderAsync(RemoveProductFromOrderModel model);
+        Task<OrderModel> GetOrderByIdAsync(Guid orderId);
+
     }
 }

@@ -9,9 +9,7 @@ namespace FastFood.Infra.Data.Repositories.OrderManagement
 {
     public class OrderRepository : BaseRepository<Order>, IOrderRepository
     {
-        public OrderRepository(FastFoodDbContext context) : base(context)
-        {
-        }
+        public OrderRepository(FastFoodDbContext context) : base(context) { }
 
         public Task<bool> ExistsByCodeAsync(string code)
         {
@@ -21,6 +19,23 @@ namespace FastFood.Infra.Data.Repositories.OrderManagement
         public override Task<Order?> GetByIdAsync(Guid id, params Expression<Func<Order, object>>[] includes)
         {
             return base.GetByIdAsync(id, includes);
+        }
+
+        public Task<Order?> GetCompleteByIdAsync(Guid id)
+        {
+            return _context.Orders
+                .Include(o => o.OrderedProducts)
+                    .ThenInclude(p => p.Product)
+                .Include(o => o.OrderedProducts)
+                    .ThenInclude(p => p.CustomIngredients)
+                .FirstOrDefaultAsync(o => o.Id == id);
+        }
+        public Task<Order?> GetByIdWithProductsAndIngredientsAsync(Guid id)
+        {
+            return _context.Orders
+                .Include(o => o.OrderedProducts)
+                .ThenInclude(p => p.CustomIngredients)
+                .FirstOrDefaultAsync(o => o.Id == id);
         }
     }
 }

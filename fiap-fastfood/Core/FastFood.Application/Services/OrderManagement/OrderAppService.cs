@@ -1,7 +1,6 @@
 ﻿using FastFood.Application.Models.OrderManagement;
 using FastFood.Application.Models.OrderManagement.FastFood.Application.Models.OrderManagement;
 using FastFood.Domain.Common.Exceptions;
-using FastFood.Domain.Entities.OrderManagement.Ingredients;
 using FastFood.Domain.Entities.OrderManagement;
 using FastFood.Domain.Entities.PaymentManagement;
 using FastFood.Domain.Ports.Common;
@@ -77,59 +76,100 @@ public class OrderAppService : IOrderAppService
         await _orderedProductRepository.AddAsync(orderedProduct);
         await _unitOfWork.CommitAsync();
     }
+    public async Task<OrderModel> GetOrderByIdAsync(Guid orderId)
+    {
+        var order = await _orderRepository.GetCompleteByIdAsync(orderId);
 
+        if (order is null)
+            throw new ApplicationException("Pedido não encontrado.");
+
+        return new OrderModel
+        {
+            Id = order.Id,
+            Code = order.Code,
+            TotalPrice = order.TotalPrice,
+            OrderStatus = order.OrderStatus,
+            PaymentStatus = order.PaymentStatus,
+            CreatedAt = order.CreatedAt,
+            CustomerId = order.CustomerId,
+            OrderedProducts = order.OrderedProducts.Select(p => new OrderedProductModel
+            {
+                Id = p.Id,
+                ProductId = p.ProductId,
+                ProductName = p.Product?.Name,
+                Quantity = p.Quantity,
+                FinalPrice = p.FinalPrice,
+                Observation = p.Observation,
+                Image = p.Product?.Image is not null
+                    ? new ProductImageModel
+                    {
+                        Name = p.Product.Image.Name,
+                        Url = p.Product.Image.Url
+                    }
+                    : null,
+                CustomIngredients = p.CustomIngredients.Select(i => new CustomIngredientModel
+                {
+                    Id = i.Id,
+                    Name = i.Name,
+                    Price = i.Price,
+                    Quantity = i.Quantity,
+                    ProductBaseIngredientId = i.ProductBaseIngredientId
+                }).ToList()
+            }).ToList()
+        };
+    }
     public async Task UpdateProductInOrderAsync(UpdateProductInOrderModel model)
     {
-        await Task.CompletedTask;
-        /* var order = await _orderRepository.GetByIdAsync(model.OrderId, o => o.OrderedMealProducts, o => o.OrderedSideDish, o => o.OrderedDrink, o => o.OrderedDessert);
+        var order = await _orderRepository.GetByIdWithProductsAndIngredientsAsync(model.OrderId);
 
-         if (order is null)
-             throw new ApplicationException("Pedido não encontrado.");
+        if (order is null)
+            throw new ApplicationException("Pedido não encontrado.");
 
-         if (order.OrderStatus != EnumOrderStatus.Started)
-             throw new DomainException("Não é possível atualizar produtos após o fechamento do pedido.");
+        if (order.OrderStatus != EnumOrderStatus.Started)
+            throw new DomainException("Não é possível atualizar produtos após o fechamento do pedido.");
 
-         var product = order.OrderedMealProducts
-             .Concat(order.OrderedSideDish)
-             .Concat(order.OrderedDrink)
-             .Concat(order.OrderedDessert)
-             .FirstOrDefault(p => p.Id == model.OrderedProductId);
+        var orderedProduct = order.OrderedProducts.FirstOrDefault(p => p.Id == model.OrderedProductId);
 
-         if (product is null)
-             throw new ApplicationException("Produto não encontrado no pedido.");
+        if (orderedProduct is null)
+            throw new ApplicationException("Produto não encontrado no pedido.");
 
-         product.SetObservation(model.Observation);
+        // Atualiza observação
+        orderedProduct.SetObservation(model.Observation);
 
-         if (model.CustomIngredients != null)
-         {
-             foreach (var ingredient in model.CustomIngredients)
-             {
-                 product.SetIngredientQuantity(ingredient.IngredientId, ingredient.Quantity);
-             }
-         }
+        // Atualiza quantidade
+        orderedProduct.SetQuantity(model.Quantity);
 
-         await _orderRepository.UpdateAsync(order);
-         await _unitOfWork.CommitAsync();*/
+        // Atualiza ingredientes customizados
+        if (model.CustomIngredients is not null)
+        {
+            foreach (var input in model.CustomIngredients)
+            {
+                orderedProduct.SetIngredientQuantity(input.IngredientId, input.Quantity);
+            }
+        }
+
+        await _orderRepository.UpdateAsync(order);
+        await _unitOfWork.CommitAsync();
     }
 
     public async Task RemoveProductFromOrderAsync(RemoveProductFromOrderModel model)
     {
-        await Task.CompletedTask;
-        //var order = await _orderRepository.GetByIdAsync(model.OrderId,
-        //    o => o.OrderedMealProducts,
-        //    o => o.OrderedSideDish,
-        //    o => o.OrderedDrink,
-        //    o => o.OrderedDessert);
+        var order = await _orderRepository.GetByIdAsync(model.OrderId, o => o.OrderedProducts);
 
-        //if (order is null)
-        //    throw new ApplicationException("Pedido não encontrado.");
+        if (order is null)
+            throw new ApplicationException("Pedido não encontrado.");
 
-        //if (order.OrderStatus != EnumOrderStatus.Started)
-        //    throw new DomainException("Não é possível remover produtos após o fechamento do pedido.");
+        if (order.OrderStatus != EnumOrderStatus.Started)
+            throw new DomainException("Não é possível remover produtos após o fechamento do pedido.");
 
-        //order.RemoveProduct(model.OrderedProductId);
+        var productToRemove = order.OrderedProducts.FirstOrDefault(p => p.Id == model.OrderedProductId);
 
-        //await _orderRepository.UpdateAsync(order);
-        //await _unitOfWork.CommitAsync();
+        if (productToRemove is null)
+            throw new ApplicationException("Produto não encontrado no pedido.");
+
+        order.OrderedProducts.Remove(productToRemove);
+
+        await _orderRepository.UpdateAsync(order);
+        await _unitOfWork.CommitAsync();
     }
 }
